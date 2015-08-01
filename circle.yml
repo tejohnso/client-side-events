@@ -1,0 +1,17 @@
+dependencies:
+  post:
+    - git clone git@github.com:Rise-Vision/private-keys.git
+
+test:
+  override:
+    - goapp test ./...
+
+deployment:
+  staging:
+    branch: /(feature|fix|chore).*/
+    commands:
+      - echo "nothing to deploy on staging branch"
+  production:
+    branch: master
+    commands:
+      - goapp deploy
