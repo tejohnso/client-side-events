@@ -1,0 +1,4 @@
+cron:
+  - description: daily table creation
+    url: /
+    schedule: every 24 hours
