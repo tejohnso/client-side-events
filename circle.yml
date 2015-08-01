@@ -4,7 +4,7 @@ dependencies:
 
 test:
   override:
-    - goapp test ./...
+    - GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/private-keys/client-side-events/service-acct-2deb606013f0.json goapp test ./...
 
 deployment:
   staging:

@@ -1,7 +1,6 @@
 package tables
 
 import (
-  "./entities"
   "strings"
   "net/http"
   "google.golang.org/appengine"
@@ -44,7 +43,7 @@ func createTables(writer http.ResponseWriter, req *http.Request) {
   }
 
   for _, datasetId := range datasetIds {
-    table, err := entities.Table(datasetId, projectId)
+    table, err := NewTableEntity(datasetId, projectId)
 
     if err != nil {
       log.Errorf(context, "Error generating table entity: %v", err)

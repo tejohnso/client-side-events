@@ -1,5 +1,5 @@
 application: client-side-events
-module: tables
+module: default
 version: 1
 runtime: go
 api_version: go1

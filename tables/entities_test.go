@@ -1,4 +1,4 @@
-package entities
+package tables
 
 import (
   "testing"
@@ -6,14 +6,14 @@ import (
 )
 
 func TestInvalidDatasetId(t *testing.T) {
-  _, err := Table("BadDataset", "testproject")
+  _, err := NewTableEntity("BadDataset", "testproject")
   if err == nil {
     t.Error("Should have failed")
   }
 }
 
 func TestViewerSchema(t *testing.T) {
-  table, err := Table("Viewer_test", "testproject")
+  table, err := NewTableEntity("Viewer_test", "testproject")
   if err != nil {
     t.Error("Could not get a table entity for Viewer schema")
   }
@@ -33,7 +33,7 @@ func TestViewerSchema(t *testing.T) {
 }
 
 func TestCAPSchema(t *testing.T) {
-  table, err := Table("CAP_test", "testproject")
+  table, err := NewTableEntity("CAP_test", "testproject")
   if err != nil {
     t.Error("Could not get a table entity for CAP schema")
   }
@@ -44,7 +44,7 @@ func TestCAPSchema(t *testing.T) {
 }
 
 func TestOLPSchema(t *testing.T) {
-  table, err := Table("OLP_test", "testproject")
+  table, err := NewTableEntity("OLP_test", "testproject")
   if err != nil {
     t.Error("Could not get a table entity for OLP schema")
   }

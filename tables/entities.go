@@ -1,4 +1,4 @@
-package entities
+package tables
 
 import (
   "time"
@@ -119,7 +119,7 @@ func init() {
   }
 }
 
-func Table(datasetId string, projectId string) (tableEntity *bigquery.Table, err error) {
+func NewTableEntity(datasetId string, projectId string) (tableEntity *bigquery.Table, err error) {
   schema := schemas[strings.Split(datasetId, "_")[0]]
   if schema == nil {
     err = fmt.Errorf("entities/table.go: no schema for %v", datasetId)
