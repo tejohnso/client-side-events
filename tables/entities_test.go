@@ -2,18 +2,17 @@ package tables
 
 import (
   "testing"
-  "regexp"
 )
 
 func TestInvalidDatasetId(t *testing.T) {
-  _, err := NewTableEntity("BadDataset", "testproject")
+  _, err := NewTableEntity("BadDataset", "testproject", "test")
   if err == nil {
     t.Error("Should have failed")
   }
 }
 
 func TestViewerSchema(t *testing.T) {
-  table, err := NewTableEntity("Viewer_test", "testproject")
+  table, err := NewTableEntity("Viewer_test", "testproject", "test")
   if err != nil {
     t.Error("Could not get a table entity for Viewer schema")
   }
@@ -22,8 +21,7 @@ func TestViewerSchema(t *testing.T) {
     t.Error("Project id is incorrect")
   }
 
-  matched, err := regexp.MatchString("events20[\\d]{6}", table.TableReference.TableId)
-  if !matched || err != nil {
+  if table.TableReference.TableId != "test" {
     t.Error("Table name is invalid")
   }
 
@@ -33,7 +31,7 @@ func TestViewerSchema(t *testing.T) {
 }
 
 func TestCAPSchema(t *testing.T) {
-  table, err := NewTableEntity("CAP_test", "testproject")
+  table, err := NewTableEntity("CAP_test", "testproject", "test")
   if err != nil {
     t.Error("Could not get a table entity for CAP schema")
   }
@@ -44,7 +42,7 @@ func TestCAPSchema(t *testing.T) {
 }
 
 func TestOLPSchema(t *testing.T) {
-  table, err := NewTableEntity("OLP_test", "testproject")
+  table, err := NewTableEntity("OLP_test", "testproject", "test")
   if err != nil {
     t.Error("Could not get a table entity for OLP schema")
   }

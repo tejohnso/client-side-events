@@ -1,7 +1,6 @@
 package tables
 
 import (
-  "time"
   "fmt"
   "strings"
   bigquery "google.golang.org/api/bigquery/v2"
@@ -119,22 +118,18 @@ func init() {
   }
 }
 
-func NewTableEntity(datasetId string, projectId string) (tableEntity *bigquery.Table, err error) {
+func NewTableEntity(datasetId string, projectId string, tableId string) (tableEntity *bigquery.Table, err error) {
   schema := schemas[strings.Split(datasetId, "_")[0]]
   if schema == nil {
     err = fmt.Errorf("entities/table.go: no schema for %v", datasetId)
     return
   }
 
-  t := time.Now()
-  yyyymmdd := fmt.Sprintf("%4d", t.Year()) + fmt.Sprintf("%02d", t.Month()) + fmt.Sprintf("%02d", t.Day())
-
-  fmt.Println(datasetId)
   tableEntity = &bigquery.Table{
     TableReference: &bigquery.TableReference{
       DatasetId: datasetId,
       ProjectId: projectId,
-      TableId: "events" + yyyymmdd,
+      TableId: tableId,
     },
     Schema: schema,
   }

@@ -1,9 +1,12 @@
 package tables
 
 import (
+  "time"
+  "fmt"
   "strings"
   "net/http"
   "google.golang.org/appengine"
+  "golang.org/x/net/context"
   "google.golang.org/appengine/log"
   "golang.org/x/oauth2/google"
   bigquery "google.golang.org/api/bigquery/v2"
@@ -21,12 +24,6 @@ func init() {
 }
 
 func createTables(writer http.ResponseWriter, req *http.Request) {
-  datasetIds := [3]string{
-    "Viewer_Events",
-    "CAP_Events",
-    "OLP_Events",
-  }
-
   context := appengine.NewContext(req)
   client, err := google.DefaultClient(context, scope)
   if err != nil {
@@ -42,26 +39,50 @@ func createTables(writer http.ResponseWriter, req *http.Request) {
     return
   }
 
-  for _, datasetId := range datasetIds {
-    table, err := NewTableEntity(datasetId, projectId)
+  t := time.Now()
+  for i := 1; i < 10; i++ {
+    t = t.AddDate(0, 0, 1)
+    log.Infof(context, "tables/tables.go: Creating tables for %v-%v-%v", t.Year(), int(t.Month()), t.Day())
+    insertTablesForTime(t, service, errorHandler(writer, context))
+  }
+}
 
-    if err != nil {
-      log.Errorf(context, "Error generating table entity: %v", err)
-      writer.WriteHeader(http.StatusInternalServerError)
-      return
-    }
+func insertTablesForTime(t time.Time, service *bigquery.Service, errorHandler func(error)) {
+  yyyymmdd := fmt.Sprintf("%4d", t.Year()) + fmt.Sprintf("%02d", t.Month()) + fmt.Sprintf("%02d", t.Day())
+  tableId := "events" + yyyymmdd
+
+  datasetIds := [3]string{
+    "Viewer_Events",
+    "CAP_Events",
+    "OLP_Events",
+  }
+
+  for _, datasetId := range datasetIds {
+    table, err := NewTableEntity(datasetId, projectId, tableId)
+    errorHandler(err)
 
     _, err = service.Tables.Insert(projectId, datasetId, table).Do()
+    errorHandler(err)
+  }
+}
 
-    if err != nil && !strings.HasPrefix(err.Error(), AlreadyExists) {
-      log.Errorf(context, "tables/tables.go: Unable to create table: %v", err)
-      if (strings.HasPrefix(err.Error(), BadAuth)) {
-        writer.WriteHeader(http.StatusUnauthorized)
-        return
-      }
+func errorHandler(writer http.ResponseWriter, context context.Context) (func(error)) {
+  return func (err error) {
+    if err == nil {return}
 
-      writer.WriteHeader(http.StatusInternalServerError)
+    if strings.HasPrefix(err.Error(), AlreadyExists) {
+      log.Infof(context, "tables.tables.go: table exists")
       return
     }
+
+    log.Errorf(context, "tables/tables.go: Could not create table: ", err)
+
+    if strings.HasPrefix(err.Error(), BadAuth) {
+      writer.WriteHeader(http.StatusUnauthorized)
+      return
+    }
+
+    writer.WriteHeader(http.StatusInternalServerError)
+    return
   }
 }
