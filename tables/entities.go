@@ -23,7 +23,7 @@ func init() {
       },
       &bigquery.TableFieldSchema{
         Mode: "NULLABLE",
-        Name: "company_id",
+        Name: "player_version",
         Type: "STRING",
       },
       &bigquery.TableFieldSchema{
@@ -33,7 +33,7 @@ func init() {
       },
       &bigquery.TableFieldSchema{
         Mode: "NULLABLE",
-        Name: "player_version",
+        Name: "player_name",
         Type: "STRING",
       },
       &bigquery.TableFieldSchema{
