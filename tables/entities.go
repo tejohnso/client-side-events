@@ -23,22 +23,7 @@ func init() {
       },
       &bigquery.TableFieldSchema{
         Mode: "NULLABLE",
-        Name: "player_version",
-        Type: "STRING",
-      },
-      &bigquery.TableFieldSchema{
-        Mode: "NULLABLE",
         Name: "viewer_version",
-        Type: "STRING",
-      },
-      &bigquery.TableFieldSchema{
-        Mode: "NULLABLE",
-        Name: "player_name",
-        Type: "STRING",
-      },
-      &bigquery.TableFieldSchema{
-        Mode: "NULLABLE",
-        Name: "os",
         Type: "STRING",
       },
       &bigquery.TableFieldSchema{
