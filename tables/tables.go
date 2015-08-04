@@ -40,7 +40,7 @@ func createTables(writer http.ResponseWriter, req *http.Request) {
   }
 
   t := time.Now()
-  for i := 1; i < 10; i++ {
+  for i := 1; i < 3; i++ {
     t = t.AddDate(0, 0, 1)
     log.Infof(context, "tables/tables.go: Creating tables for %v-%v-%v", t.Year(), int(t.Month()), t.Day())
     insertTablesForTime(t, service, errorHandler(writer, context))
