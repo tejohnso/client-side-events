@@ -18,6 +18,11 @@ func init() {
       },
       &bigquery.TableFieldSchema{
         Mode: "NULLABLE",
+        Name: "event_details",
+        Type: "STRING",
+      },
+      &bigquery.TableFieldSchema{
+        Mode: "NULLABLE",
         Name: "display_id",
         Type: "STRING",
       },
